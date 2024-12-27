@@ -67,7 +67,7 @@ mat4d mat4d::mat4d_mult(mat4d& a){
 vec4d mat4d::vec4d_mult(vec4d& a){
     vec4d res;
     for(int i = 0;i<4;i++){
-        res.v[i] = (m[i][0]*a.v[0])+(m[i][1]*a.v[1])+(m[i][2]*a.v[2]);
+        res.v[i] = (m[i][0]*a.v[0])+(m[i][1]*a.v[1])+(m[i][2]*a.v[2])+(m[i][3]*a.v[3]);
     }
     return res;
 }
@@ -116,11 +116,48 @@ mat4d mat4d_create_rotation_z(double theta){
     return res;
 }
 mat4d mat4d_create_scale(double scale_x, double scale_y, double scale_z){
-    double scale[4][4] = {{scale_x, 0, 0, 0},
+    double scale_mat[4][4] = {{scale_x, 0, 0, 0},
                                 {0, scale_y, 0, 0},
                                 {0, 0, scale_z, 0},
                                 {0, 0, 0, 1}};
     mat4d res;
-    memcpy(res.m, scale, 4*4*sizeof(double));
+    memcpy(res.m, scale_mat, 4*4*sizeof(double));
+    return res;
+}
+
+mat4d mat4d_create_view(vec3d& camera_pos, vec3d& target, vec3d& up){
+    //Normalize all vectors for orthonormal basis
+    vec3d zaxis = (camera_pos-target).normalize(); //Z-axis in view coordinates
+    vec3d xaxis = (up.cross(zaxis)).normalize(); //X-axis in view coordinates
+    vec3d yaxis = up;
+
+    //View matrix is composed of the orientation and translation matricies (orientation for rotation of camera)
+
+    //NOTE: using column-major version of view matrix
+    double view_mat[4][4] = {{xaxis.v[0], xaxis.v[1], xaxis.v[2], -xaxis.dot(camera_pos)},
+                             {yaxis.v[0], yaxis.v[1], yaxis.v[2], -yaxis.dot(camera_pos)},
+                             {zaxis.v[0], zaxis.v[1], zaxis.v[2], -zaxis.dot(camera_pos)},
+                             {0, 0, 0, 1}};
+    mat4d res;
+    memcpy(res.m, view_mat, 4*4*sizeof(double));
+    return res;
+}
+
+mat4d mat4d_create_perspective(double fov, double aspect_ratio, 
+                            double near, double far){
+    double t = tanf(fov/2.0);
+    double m[4][4] = {{1/(aspect_ratio*t), 0, 0, 0},
+                      {0, 1/t, 0, 0},
+                      {0, 0, far/(far-near), (-2*far*near)/(far-near)},
+                      {0, 0, 1, 0}};
+    mat4d res;
+    memcpy(res.m, m, 4*4*sizeof(double));
+    return res;
+}
+
+vec4d apply_perspective(mat4d& perspective_mat, vec4d& a){
+    vec4d res = perspective_mat.vec4d_mult(a);
+    double w = res.v[3];
+    res = res*(1/w);
     return res;
 }

@@ -29,10 +29,21 @@ class mat4d{
 //Functions to create special matricies
 
 //Model (Model to World)
+//Performed as M = TR, rotation first, translation after
 mat4d mat4d_create_translation(double translation_x, double translation_y, double translation_z);
 mat4d mat4d_create_rotation_x(double theta);
 mat4d mat4d_create_rotation_y(double theta);
 mat4d mat4d_create_rotation_z(double theta);
 mat4d mat4d_create_scale(double scale_x, double scale_y, double scale_z);
 
+//View (Model to View)
+mat4d mat4d_create_view(vec3d& camera_pos, vec3d& target, vec3d& up);
+
+//Projection (View to Projection)
+mat4d mat4d_create_perspective(double fov, double aspect_ratio, 
+                            double near, double far); //fov = Vertical field of view from bottom to top of near plane
+                                                      //aspect_ratio = width/height
+                                                      //near = near plane distance
+                                                      //far = far plane distance
+vec4d apply_perspective(mat4d& perspective_mat, vec4d& a);
 #endif
