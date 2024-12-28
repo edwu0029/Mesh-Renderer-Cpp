@@ -24,11 +24,11 @@ make build # Can also just use "make" for build
 For better performance, you can use `make release` instead of `make build` to use more compiler optimizations.
 
 ## Todo
-[ ] Rasterize triangles instead of just wireframe
-[ ] Implement Z-Buffer
-[ ] Finalize inputs to control view
-[ ] Implement textures
-[ ] Use SDL_Texture instead of SDL_Surface for faster Hardware rendering
+- [ ] Rasterize triangles instead of just wireframe
+- [ ] Implement Z-Buffer
+- [ ] Finalize inputs to control view
+- [ ] Implement textures
+- [ ] Use SDL_Texture instead of SDL_Surface for faster Hardware rendering
 
 ## Credits
 - [Example meshes from Florida State University](https://people.sc.fsu.edu/~jburkardt/data/obj/obj.html)
