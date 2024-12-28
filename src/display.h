@@ -20,6 +20,4 @@ void display_quit();
 void display_present();
 void set_blackout();
 
-void display_draw_pixel(int x, int y, uint8_t r, uint8_t g, uint8_t b);
-
 #endif
