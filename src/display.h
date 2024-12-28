@@ -11,6 +11,7 @@ inline int window_width;
 inline int window_height;
 
 uint32_t rgba_to_uint32(uint8_t r, uint8_t g, uint8_t b, uint8_t a); //Convert rgba to a 32 bit value. Note that a = 255 is opaque
+bool check_boundary(int x, int y); //Checks whether (x, y) is a valid screen coordinate
 void set_pixel(int x, int y, uint32_t colour); //Sets a pixel at (x, y) in the surface
 void draw_line(int x1, int y1, int x2, int y2, uint32_t colour); //Draws line from (x1, y1) to (x2, y2) with colour
                                                                  //No particular ordering of points needed

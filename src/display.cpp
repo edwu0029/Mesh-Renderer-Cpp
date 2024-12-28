@@ -25,13 +25,15 @@ bool display_init() {
 uint32_t rgba_to_uint32(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     return (a << 24) | (r << 16) | (g << 8) | b;
 }
-
+bool check_boundary(int x, int y){
+    return 0<=x && x<window_width && 0<=y && y<window_height;
+}
 void set_pixel(int x, int y, uint32_t colour){
-    if(0<=x && x<window_width && 0<=y && y<window_height){
-        pixel_buffer[y*window_width + x] = colour;
-    }
+    pixel_buffer[y*window_width + x] = colour;
 }
 void draw_line(int x1, int y1, int x2, int y2, uint32_t colour){
+    //Digital differential analyzer
+    //https://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm)
     double dx = x2-x1, dy = y2-y1;
     double step;
     if(abs(dx)>abs(dy)){
@@ -44,7 +46,10 @@ void draw_line(int x1, int y1, int x2, int y2, uint32_t colour){
 
     double x = x1, y = y1;
     for(int i = 0;i<=step;i++){
-        set_pixel(round(x), round(y), colour);
+        int rx = round(x), ry = round(y);
+        if(check_boundary(rx, ry)){
+            set_pixel(rx, ry, colour);
+        }
         x+=dx;
         y+=dy;
     }
