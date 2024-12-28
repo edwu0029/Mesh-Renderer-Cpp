@@ -1,8 +1,8 @@
 #include "display.h"
 
 bool display_init() {
-    window_width = 640;
-    window_height = 480;
+    window_width = 920;
+    window_height = 920;
     pixel_buffer = (uint32_t*)malloc(window_width*window_height*sizeof(uint32_t));
 
     if(SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -27,7 +27,9 @@ uint32_t rgba_to_uint32(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
 }
 
 void set_pixel(int x, int y, uint32_t colour){
-    pixel_buffer[y*window_width + x] = colour;
+    if(0<=x && x<window_width && 0<=y && y<window_height){
+        pixel_buffer[y*window_width + x] = colour;
+    }
 }
 void draw_line(int x1, int y1, int x2, int y2, uint32_t colour){
     double dx = x2-x1, dy = y2-y1;
