@@ -5,7 +5,7 @@ bool display_init() {
     window_height = 920;
     pixel_buffer = (uint32_t*)malloc(window_width*window_height*sizeof(uint32_t));
 
-    if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         fprintf(stderr, "Error initializing SDL\n"
                         "SDL_Error %s\n", SDL_GetError());
         return false;
