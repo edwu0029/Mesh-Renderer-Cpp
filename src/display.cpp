@@ -29,7 +29,7 @@ bool check_boundary(int x, int y){
     return 0<=x && x<window_width && 0<=y && y<window_height;
 }
 void set_pixel(int x, int y, uint32_t colour){
-    pixel_buffer[y*window_width + x] = colour;
+    pixel_buffer[(window_height-1-y)*window_width + x] = colour;
 }
 void draw_line(int x1, int y1, int x2, int y2, uint32_t colour){
     //Digital differential analyzer
