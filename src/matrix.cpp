@@ -154,10 +154,3 @@ mat4d mat4d_create_perspective(double fov, double aspect_ratio,
     memcpy(res.m, m, 4*4*sizeof(double));
     return res;
 }
-
-vec4d apply_perspective(mat4d& perspective_mat, vec4d& a){
-    vec4d res = perspective_mat.vec4d_mult(a);
-    double w = res.v[3];
-    res = res*(1/w);
-    return res;
-}

@@ -45,5 +45,5 @@ mat4d mat4d_create_perspective(double fov, double aspect_ratio,
                                                       //aspect_ratio = width/height
                                                       //near = near plane distance
                                                       //far = far plane distance
-vec4d apply_perspective(mat4d& perspective_mat, vec4d& a);
+
 #endif

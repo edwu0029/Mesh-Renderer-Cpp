@@ -3,6 +3,7 @@
 #include "display.h"
 #include "camera.h"
 #include "triangle.h"
+#include "rasterization.h"
 
 #include "globals.h"
 #include "input_handler.h"
@@ -111,7 +112,10 @@ int main(int argc, char** argv) {
 
                 //Projection
                 mat4d perspective_mat4d = mat4d_create_perspective(M_PI/2, aspect_ratio, 1, 30); //TODO, hardcoded values
-                vec4d converted = apply_perspective(perspective_mat4d, view);
+                
+                vec4d clip_space = perspective_mat4d.vec4d_mult(view);
+
+                vec4d converted = perspective_divide(clip_space);
 
                 //Perform adjustments on the converted components to screen coordinates
                 converted = converted+vec4d(1, 1, 0, 0);
