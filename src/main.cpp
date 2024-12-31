@@ -21,10 +21,10 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Not enough command line args!\n");
         exit(0);
     }
-    std::string file_name = argv[1];
+    char* file_name = argv[1];
 
     // Load .obj mesh using tiny obj loader
-    std::string mesh_path = "./meshes/"+file_name;
+    std::string mesh_path = "./meshes/"+(std::string)file_name;
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
 
@@ -33,9 +33,9 @@ int main(int argc, char** argv) {
 
     bool ret = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warn, &err, mesh_path.c_str());
     if(ret){
-        printf("Worked!\n");
+        printf("%s loaded successfully!\n", file_name);
     }else{
-        printf("Not good\n");
+        printf("ERROR loading %s\n", file_name);
     }
 
     std::vector<triangle> triangles;
