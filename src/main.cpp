@@ -115,24 +115,35 @@ int main(int argc, char** argv) {
                 
                 vec4d clip_space = perspective_mat4d.vec4d_mult(view);
 
-                vec4d converted = perspective_divide(clip_space);
-
-                //Perform adjustments on the converted components to screen coordinates
-                converted = converted+vec4d(1, 1, 0, 0);
-                converted.v[0] = converted.v[0]*(window_width/2);
-                converted.v[1] = converted.v[1]*(window_height/2);
-
-                converted_vecs.push_back(converted);
+                converted_vecs.push_back(clip_space);
             }
             if(converted_vecs[0].v[2] <0.0 && converted_vecs[1].v[2] <0.0 && converted_vecs[2].v[2] <0.0){
                 continue;
             }
+            std::vector<triangle4d>to_draw;
+            std::vector<vec4d>temp, clipped_vertices;
 
-            triangle4d tri4d = triangle4d(converted_vecs[0], converted_vecs[1], converted_vecs[2]);
-            triangle3d to_draw_tri = tri4d_to_tri3d(tri4d);
+            clip_waxis(converted_vecs, clipped_vertices); //Clip against near plane
+            get_triangles_from_vertices(clipped_vertices, to_draw);
 
             //Draw the triangle
-            draw_triangle_outline(to_draw_tri, rgba_to_uint32(255, 0, 0, 255)); //TODO not hardcode colour
+            for(int k = 0;k<to_draw.size();k++){
+                
+                //For each of the three triangle vertices
+                for(int l = 0;l<3;l++){
+                    //Perspective divide
+                    to_draw[k].vertices[l] = perspective_divide(to_draw[k].vertices[l]);
+
+                    //Scale to window
+                    to_draw[k].vertices[l] = to_draw[k].vertices[l]+vec4d(1, 1, 0, 0);
+                    to_draw[k].vertices[l].v[0] = to_draw[k].vertices[l].v[0]*(window_width/2);
+                    to_draw[k].vertices[l].v[1] = to_draw[k].vertices[l].v[1]*(window_height/2);
+                }
+                triangle3d tri = tri4d_to_tri3d(to_draw[k]);
+
+                //Scale to window
+                draw_triangle_outline(tri, rgba_to_uint32(255, 0, 0, 255)); //TODO not hardcode colour
+            }
         }
         //Update after drawing all triangles
         display_present();
