@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
         printf("ERROR loading %s\n", file_name);
     }
 
-    std::vector<triangle> triangles;
+    std::vector<triangle3d> triangles;
 
     //Loop shapes
     for (size_t s = 0;s<shapes.size();s++) {
@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
       for (size_t f = 0;f<shapes[s].mesh.num_face_vertices.size();f++) {
         size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
 
-        triangle tri;
+        triangle3d tri;
         //Loop vertices in the face (Using default setings, which means all faces are triangles)
         for (size_t v = 0;v<fv;v++) {
           // access to vertex
@@ -128,10 +128,11 @@ int main(int argc, char** argv) {
                 continue;
             }
 
+            triangle4d tri4d = triangle4d(converted_vecs[0], converted_vecs[1], converted_vecs[2]);
+            triangle3d to_draw_tri = tri4d_to_tri3d(tri4d);
+
             //Draw the triangle
-            draw_line(converted_vecs[0].v[0], converted_vecs[0].v[1], converted_vecs[1].v[0], converted_vecs[1].v[1], rgba_to_uint32(255, 0, 0, 255));
-            draw_line(converted_vecs[1].v[0], converted_vecs[1].v[1], converted_vecs[2].v[0], converted_vecs[2].v[1], rgba_to_uint32(255, 0, 0, 255));
-            draw_line(converted_vecs[2].v[0], converted_vecs[2].v[1], converted_vecs[0].v[0], converted_vecs[0].v[1], rgba_to_uint32(255, 0, 0, 255));
+            draw_triangle_outline(to_draw_tri, rgba_to_uint32(255, 0, 0, 255)); //TODO not hardcode colour
         }
         //Update after drawing all triangles
         display_present();

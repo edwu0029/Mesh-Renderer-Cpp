@@ -2,6 +2,7 @@
 #define DISPLAY_H
 
 #include <SDL2/SDL.h>
+#include "triangle.h"
 
 inline SDL_Window* window;
 inline SDL_Surface* surface;
@@ -15,6 +16,7 @@ bool check_boundary(int x, int y); //Checks whether (x, y) is a valid screen coo
 void set_pixel(int x, int y, uint32_t colour); //Sets a pixel at (x, y) in the surface
 void draw_line(int x1, int y1, int x2, int y2, uint32_t colour); //Draws line from (x1, y1) to (x2, y2) with colour
                                                                  //No particular ordering of points needed
+void draw_triangle_outline(triangle3d tri, uint32_t colour); //Draws the triangle outline projected onto the screen
 
 bool display_init();
 void display_quit();

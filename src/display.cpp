@@ -54,7 +54,11 @@ void draw_line(int x1, int y1, int x2, int y2, uint32_t colour){
         y+=dy;
     }
 }
-
+void draw_triangle_outline(triangle3d tri, uint32_t colour){
+    draw_line(tri.vertices[0].v[0], tri.vertices[0].v[1], tri.vertices[1].v[0], tri.vertices[1].v[1], colour);
+    draw_line(tri.vertices[1].v[0], tri.vertices[1].v[1], tri.vertices[2].v[0], tri.vertices[2].v[1], colour);
+    draw_line(tri.vertices[2].v[0], tri.vertices[2].v[1], tri.vertices[0].v[0], tri.vertices[0].v[1], colour);
+}
 
 void display_quit(){
     free(pixel_buffer);
